@@ -276,7 +276,6 @@ class AttributionModal extends Component {
 							</Button>
 						</Notice>
 					) }
-					<PluginAttribution />
 					<div className="component-modal__footer">
 						<Button isDestructive isLink onClick={ onClose }>
 							Cancel
@@ -285,6 +284,7 @@ class AttributionModal extends Component {
 							{ title }
 						</Button>
 					</div>
+					<PluginAttribution />
 				</form>
 			</Modal>
 		);
