@@ -22,6 +22,7 @@ class AttributionModal extends Component {
 
 		this.handleChange = this.handleChange.bind( this );
 		this.handleSubmit = this.handleSubmit.bind( this );
+		this.discardChanges = this.discardChanges.bind( this );
 
 		this.state = {
 			editedContent: false,
@@ -57,6 +58,13 @@ class AttributionModal extends Component {
 
 		// Reset state.
 		this.setState( this.props.item );
+	}
+
+	discardChanges() {
+		this.setState( {
+			editedContent: false,
+			content: '',
+		} );
 	}
 
 	render() {
@@ -262,15 +270,7 @@ class AttributionModal extends Component {
 							You have edited this text. You can no longer make
 							changes using the fields above. All additional
 							changes must be made manually.
-							<Button
-								isLink
-								onClick={ () =>
-									this.setState( {
-										editedContent: false,
-										content: '',
-									} )
-								}
-							>
+							<Button isLink onClick={ this.discardChanges }>
 								Discard changes and revert to suggested
 								attribution.
 							</Button>
