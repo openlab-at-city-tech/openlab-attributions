@@ -33,6 +33,12 @@ function register_assets() {
 		true
 	);
 
+	wp_set_script_translations(
+		'attribution-block-script',
+		'openlab-attributions'
+		plugin_dir_path( ROOT_FILE ) . 'languages'
+	);
+
 	wp_register_script(
 		'attribution-classic-script',
 		plugins_url( '/build/js/classic-editor.js', ROOT_FILE ),
