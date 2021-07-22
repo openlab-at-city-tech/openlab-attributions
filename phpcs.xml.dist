@@ -11,9 +11,11 @@
 	<!-- Exclude minified and built Javascript files. -->
 	<exclude-pattern>*.min.js</exclude-pattern>
 	<exclude-pattern>/assets/js/build.js</exclude-pattern>
-	<exclude-pattern>/dist/*</exclude-pattern>
+	<exclude-pattern>/build/*</exclude-pattern>
 
 	<exclude-pattern>webpack.mix.js</exclude-pattern>
+	<exclude-pattern>*.css</exclude-pattern>
+	<exclude-pattern>*.js</exclude-pattern>
 
 	<!-- Iterate over all PHP files by default -->
 	<file>.</file>

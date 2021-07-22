@@ -10,6 +10,7 @@ import { useState } from '@wordpress/element';
 import { dispatch, useSelect } from '@wordpress/data';
 import { RichTextToolbarButton } from '@wordpress/block-editor';
 import { isCollapsed, insertObject } from '@wordpress/rich-text';
+import { __ } from '@wordpress/i18n';
 
 /**
  * Internal dependencies
@@ -52,7 +53,7 @@ export default function Edit( { isActive, value, onChange } ) {
 			<RichTextToolbarButton
 				icon={ icon }
 				name="text-color"
-				title="Add Attribution"
+				title={ __( "Add Attribution", 'openlab-attributions' ) }
 				onClick={ () => setIsOpen( true ) }
 				isActive={ isActive }
 			/>
@@ -60,7 +61,7 @@ export default function Edit( { isActive, value, onChange } ) {
 				<Modal
 					isOpen={ isOpen }
 					modalType="add"
-					title="Add Attribution"
+					title={ __( "Add Attribution", 'openlab-attributions' ) }
 					item={ item }
 					onClose={ () => setIsOpen( false ) }
 					addItem={ ( data ) => onChange( addMarker( value, data ) ) }

@@ -18,6 +18,7 @@
     "format:scripts": "cross-env eslint './dist/js/**/*.js' --fix"
   },
   "dependencies": {
+    "@wordpress/i18n": "^4.2.0",
     "classnames": "^2.2.6",
     "nanoid": "^2.1.1",
     "react-contenteditable": "^3.3.5",
