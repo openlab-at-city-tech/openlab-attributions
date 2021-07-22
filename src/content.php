@@ -17,9 +17,12 @@ function render_attributions( $content ) {
 		return $content;
 	}
 
-	extract( [
-		'attributions' => $attributions,
-	], EXTR_SKIP );
+	extract(
+		[
+			'attributions' => $attributions,
+		],
+		EXTR_SKIP
+	);
 
 	ob_start();
 	require_once ROOT_DIR . '/views/attributions.php';

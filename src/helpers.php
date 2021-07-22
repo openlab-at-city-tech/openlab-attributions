@@ -75,9 +75,12 @@ function get_licenses() {
  */
 function get_the_license( $value ) {
 	$licenses = get_licenses();
-	$license  = array_filter( $licenses, function( $item ) use ( $value ) {
-		return $item['value'] === $value;
-	} );
+	$license  = array_filter(
+		$licenses,
+		function( $item ) use ( $value ) {
+			return $item['value'] === $value;
+		}
+	);
 
 	return end( $license );
 }

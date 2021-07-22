@@ -168,14 +168,20 @@ function save_attributions( $post_id, $post ) {
 	$order = get_attribution_marker_ids( $post->post_content );
 
 	// Remove items that doesn't have content markers.
-	$filtered = array_filter( $_POST['attributions'], function( $item ) use ( $order ) {
-		return in_array( $item['id'], $order, true );
-	} );
+	$filtered = array_filter(
+		$_POST['attributions'],
+		function( $item ) use ( $order ) {
+			return in_array( $item['id'], $order, true );
+		}
+	);
 
 	// Sort items based on marker order.
-	$attributions = sort_by( $filtered, function ( $item ) use ( $order ) {
-		return array_search( $item['id'], $order );
-	} );
+	$attributions = sort_by(
+		$filtered,
+		function ( $item ) use ( $order ) {
+			return array_search( $item['id'], $order );
+		}
+	);
 
 	// Sanitize data.
 	$attributions = array_map( __NAMESPACE__ . '\\sanitize_attributions', $attributions );
