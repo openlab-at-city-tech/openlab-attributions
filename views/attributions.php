@@ -7,10 +7,12 @@ use function OpenLab\Attributions\Helpers\get_the_attribution;
 	<ol>
 		<?php foreach ( $attributions as $attribution ) : ?>
 			<?php
+			$attribution_content = empty( $attribution['content'] ) ? get_the_attribution( $attribution ) : $attribution['content'];
+
 			printf(
 				'<li id="ref-%1$s">%2$s <a href="#anchor-%1$s">&#8593;</a></li>',
-				$attribution['id'],
-				empty( $attribution['content'] ) ? get_the_attribution( $attribution ) : $attribution['content']
+				esc_attr( $attribution['id'] ),
+				wp_kses_post( $attribution_content )
 			);
 			?>
 		<?php endforeach; ?>

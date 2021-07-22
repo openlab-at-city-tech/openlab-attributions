@@ -17,6 +17,7 @@ function render_attributions( $content ) {
 		return $content;
 	}
 
+	// phpcs:ignore WordPress.PHP.DontExtract.extract_extract
 	extract(
 		[
 			'attributions' => $attributions,

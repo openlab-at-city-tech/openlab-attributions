@@ -111,7 +111,9 @@ function remove_markers( $post_data ) {
 		return $post_data;
 	}
 
-	$search     = [];
+	$search = [];
+
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	$attr_ids   = empty( $_POST['attributions'] ) ? [] : wp_list_pluck( $_POST['attributions'], 'id' );
 	$remove_ids = array_diff( $marker_ids, $attr_ids );
 
@@ -160,6 +162,7 @@ function save_attributions( $post_id, $post ) {
 		return;
 	}
 
+	// phpcs:ignore WordPress.Security.NonceVerification.Missing
 	if ( empty( $_POST['attributions'] ) ) {
 		delete_post_meta( $post_id, 'attributions' );
 		return;
@@ -169,6 +172,7 @@ function save_attributions( $post_id, $post ) {
 
 	// Remove items that doesn't have content markers.
 	$filtered = array_filter(
+		// phpcs:ignore WordPress.Security.NonceVerification.Missing
 		$_POST['attributions'],
 		function( $item ) use ( $order ) {
 			return in_array( $item['id'], $order, true );
@@ -179,7 +183,7 @@ function save_attributions( $post_id, $post ) {
 	$attributions = sort_by(
 		$filtered,
 		function ( $item ) use ( $order ) {
-			return array_search( $item['id'], $order );
+			return array_search( $item['id'], $order, true );
 		}
 	);
 
