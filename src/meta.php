@@ -86,7 +86,7 @@ function sanitize_attributions( $item ) {
 function register_metabox() {
 	add_meta_box(
 		'ol-attributions-box',
-		'Attributions',
+		__( 'Attributions', 'openlab-attributions' ),
 		__NAMESPACE__ . '\\render_metabox',
 		get_supported_post_types(),
 		'normal',
