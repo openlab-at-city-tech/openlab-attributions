@@ -35,7 +35,7 @@ function register_assets() {
 
 	wp_set_script_translations(
 		'attribution-block-script',
-		'openlab-attributions'
+		'openlab-attributions',
 		plugin_dir_path( ROOT_FILE ) . 'languages'
 	);
 
