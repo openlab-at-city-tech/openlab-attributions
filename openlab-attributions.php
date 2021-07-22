@@ -8,7 +8,7 @@
  * Requires PHP:      5.6
  * Author:            OpenLab
  * Author URI:        https://openlab.citytech.cuny.edu/
- * icense:            GPL-2.0-or-later
+ * License:            GPL-3.0-or-later
  * License URI:       https://www.gnu.org/licenses/gpl-2.0.html
  * Text Domain:       openlab-attributions
  * Domain Path:       /languages
