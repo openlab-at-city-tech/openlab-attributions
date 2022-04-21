@@ -8,8 +8,9 @@ const nanoid = require( 'nanoid' );
  */
 import { useState } from '@wordpress/element';
 import { dispatch, useSelect } from '@wordpress/data';
-import { RichTextToolbarButton } from '@wordpress/block-editor';
+import { BlockControls } from '@wordpress/block-editor';
 import { isCollapsed, insertObject } from '@wordpress/rich-text';
+import { Toolbar, IconButton } from '@wordpress/components'
 import { __ } from '@wordpress/i18n';
 
 /**
@@ -50,13 +51,16 @@ export default function Edit( { isActive, value, onChange } ) {
 
 	return (
 		<>
-			<RichTextToolbarButton
-				icon={ icon }
-				name="text-color"
-				title={ __( "Add Attribution", 'openlab-attributions' ) }
-				onClick={ () => setIsOpen( true ) }
-				isActive={ isActive }
-			/>
+			<BlockControls>
+				<Toolbar>
+					<IconButton
+						icon={ icon }
+						label="Add Attribution"
+						className="components-toolbar_control"
+						onClick={ () => setIsOpen( true ) }
+					/>
+				</Toolbar>
+			</BlockControls>
 			{ isOpen && (
 				<Modal
 					isOpen={ isOpen }
