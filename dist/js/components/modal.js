@@ -15,6 +15,7 @@ import SelectControl from './select-control';
 import PluginAttribution from './plugin-attribution';
 import { formatAttribution } from '../utils/format';
 import help from '../utils/help';
+import Help from './help';
 
 /**
  * React depdendencies
@@ -38,6 +39,7 @@ class AttributionModal extends Component {
 			adaptedLicense: '',
 			content: '',
 			...props.item,
+			isAdaptedFromDisplayed: false
 		};
 	}
 
@@ -72,6 +74,14 @@ class AttributionModal extends Component {
 			editedContent: false,
 			content: '',
 		} );
+	}
+
+	toggleAdaptedFrom() {
+		const adaptedFromEl = document.getElementById('adaptedFrom');
+		adaptedFromEl.classList.toggle('hidden');
+		this.setState( {
+			isAdaptedFromDisplayed: ! adaptedFromEl.classList.contains('hidden')
+		});
 	}
 
 	render() {
@@ -123,7 +133,7 @@ class AttributionModal extends Component {
 		return (
 			<ReactModal
 				initWidth={ 600 }
-				initHeight={ 460 }
+				initHeight={ 660 }
 				left="50%"
 				minWidth={ 340 }
 				minHeight={ 460 }
@@ -152,7 +162,7 @@ class AttributionModal extends Component {
 					<form onSubmit={ this.handleSubmit }>
 						<div className="form-row">
 							<div className="col">
-								<p><strong>{ __( 'Title', 'openlab-attributions' ) }</strong></p>
+								<p><strong>{ __( 'Work', 'openlab-attributions' ) }</strong></p>
 								<TextControl
 									label={ __( 'Title', 'openlab-attributions' ) }
 									id="title"
@@ -172,23 +182,6 @@ class AttributionModal extends Component {
 									placeholder={ __( 'URL of the item', 'openlab-attributions' ) }
 									isInline
 								/>
-							</div>
-							<div className="col">
-								<p><strong>{ __( 'License', 'openlab-attributions' ) }</strong></p>
-								<SelectControl
-									label={ __( 'License', 'openlab-attributions' ) }
-									id="license"
-									name="license"
-									value={ this.state.license }
-									help={ help.license }
-									options={ licenses }
-									onChange={ this.handleChange }
-								/>
-							</div>
-						</div>
-						<div className="form-row">
-							<div className="col mb15">
-								<p><strong>{ __( 'Author', 'openlab-attributions' ) }</strong></p>
 								<TextControl
 									label={ __( 'Author Name', 'openlab-attributions' ) }
 									id="authorName"
@@ -200,7 +193,7 @@ class AttributionModal extends Component {
 									required={ !! this.state.authorUrl }
 								/>
 								<TextControl
-									label={ __( 'URL', 'openlab-attributions' ) }
+									label={ __( 'Author URL', 'openlab-attributions' ) }
 									id="authorUrl"
 									name="authorUrl"
 									value={ this.state.authorUrl }
@@ -208,17 +201,90 @@ class AttributionModal extends Component {
 									placeholder={ __( 'URL of the author', 'openlab-attributions' ) }
 									isInline
 								/>
+								<SelectControl
+									label={ __( 'License', 'openlab-attributions' ) }
+									id="adaptedLicense"
+									name="adaptedLicense"
+									value={ this.state.adaptedLicense }
+									options={ licenses }
+									onChange={ this.handleChange }
+									required={
+										!! this.state.derivative ||
+										this.state.adaptedTitle
+									}
+									isInline
+								/>
+								<TextControl
+									label={ __( 'Organization / Publisher', 'openlab-attributions' ) }
+									id="publisher"
+									name="publisher"
+									value={ this.state.publisher }
+									help={ help.publisher }
+									onChange={ this.handleChange }
+									placeholder={ __( 'Name of organization or publisher', 'openlab-attributions' ) }
+									required={ !! this.state.publisherUrl }
+								/>
+								<TextControl
+									label={ __( 'Organization/Publisher URL', 'openlab-attributions' ) }
+									id="publisherUrl"
+									name="publisherUrl"
+									value={ this.state.publisherUrl }
+									onChange={ this.handleChange }
+									placeholder={ __( 'URL of the organization or publisher', 'openlab-attributions' ) }
+									isInline
+								/>
+								<TextControl
+									label={ __( 'Project Name', 'openlab-attributions' ) }
+									id="project"
+									name="project"
+									value={ this.state.project }
+									help={ help.project }
+									onChange={ this.handleChange }
+									placeholder={ __( 'Name of project', 'openlab-attributions' ) }
+									required={ !! this.state.projectUrl }
+								/>
+								<TextControl
+									label={ __( 'Project URL', 'openlab-attributions' ) }
+									id="projectUrl"
+									name="projectUrl"
+									value={ this.state.projectUrl }
+									onChange={ this.handleChange }
+									placeholder={ __( 'URL of the project', 'openlab-attributions' ) }
+									isInline
+								/>
+								<TextControl
+									label={ __( 'Date Published', 'openlab-attributions' ) }
+									id="datePublished"
+									name="datePublished"
+									value={ this.state.datePublished }
+									help={ help.datePublished }
+									onChange={ this.handleChange }
+									placeholder={ __( 'Date item was published', 'openlab-attributions' ) }
+								/>
 							</div>
-							<div className="col adapted-from mb15">
-								<p><strong>{ __( 'Adapted From', 'openlab-attributions' ) }</strong></p>
+						</div>
+
+						<div className="form-row">
+							<div className="col">
+								<p id="adaptedFromHeading"
+									onClick={ () => this.toggleAdaptedFrom() }>
+									{ this.state.isAdaptedFromDisplayed
+										? <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M7 11.5h10V13H7z"></path></svg>
+										: <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false"><path d="M18 11.2h-5.2V6h-1.6v5.2H6v1.6h5.2V18h1.6v-5.2H18z"></path></svg>
+									}
+									<strong>{ __( 'Adapted From', 'openlab-attributions' ) }</strong>
+									<Help text={ help.derivative } />
+								</p>
+							</div>
+							<div id="adaptedFrom" className="col hidden adapted-from mb15">
 								<TextControl
 									label={ __( 'URL', 'openlab-attributions' ) }
 									id="derivative"
 									name="derivative"
 									value={ this.state.derivative }
-									help={ help.derivative }
 									onChange={ this.handleChange }
 									placeholder={ __( 'URL of original work', 'openlab-attributions' ) }
+									isInline
 								/>
 								<TextControl
 									label={ __( 'Title', 'openlab-attributions' ) }
@@ -231,7 +297,7 @@ class AttributionModal extends Component {
 									isInline
 								/>
 								<TextControl
-									label={ __( 'Author', 'openlab-attributions' ) }
+									label={ __( 'Author', 'openlab-attributinos' ) }
 									id="adaptedAuthor"
 									name="adaptedAuthor"
 									value={ this.state.adaptedAuthor }
@@ -254,71 +320,10 @@ class AttributionModal extends Component {
 								/>
 							</div>
 						</div>
-						<div className="form-row">
-							<div className="col">
-								<p><strong>{ __( 'Organization / Publisher', 'openlab-attributions' ) }</strong></p>
-								<TextControl
-									label={ __( 'Organization / Publisher', 'openlab-attributions' ) }
-									id="publisher"
-									name="publisher"
-									value={ this.state.publisher }
-									help={ help.publisher }
-									onChange={ this.handleChange }
-									placeholder={ __( 'Name of organization or publisher', 'openlab-attributions' ) }
-									required={ !! this.state.publisherUrl }
-								/>
-								<TextControl
-									label={ __( 'URL', 'openlab-attributions' ) }
-									id="publisherUrl"
-									name="publisherUrl"
-									value={ this.state.publisherUrl }
-									onChange={ this.handleChange }
-									placeholder={ __( 'URL of the organization or publisher', 'openlab-attributions' ) }
-									isInline
-								/>
-							</div>
-						</div>
-						<div className="form-row">
-							<div className="col">
-								<p><strong>{ __( 'Project', 'openlab-attributions' ) }</strong></p>
-								<TextControl
-									label={ __( 'Project Name', 'openlab-attributions' ) }
-									id="project"
-									name="project"
-									value={ this.state.project }
-									help={ help.project }
-									onChange={ this.handleChange }
-									placeholder={ __( 'Name of project', 'openlab-attributions' ) }
-									required={ !! this.state.projectUrl }
-								/>
-								<TextControl
-									label={ __( 'URL', 'openlab-attributions' ) }
-									id="projectUrl"
-									name="projectUrl"
-									value={ this.state.projectUrl }
-									onChange={ this.handleChange }
-									placeholder={ __( 'URL of the project', 'openlab-attributions' ) }
-									isInline
-								/>
-							</div>
-						</div>
-						<div className="form-row">
-							<div className="col">
-								<p><strong>{ __( 'Date', 'openlab-attributions' ) }</strong></p>
-								<TextControl
-									label={ __( 'Date Published', 'openlab-attributions' ) }
-									id="datePublished"
-									name="datePublished"
-									value={ this.state.datePublished }
-									help={ help.datePublished }
-									onChange={ this.handleChange }
-									placeholder={ __( 'Date item was published', 'openlab-attributions' ) }
-								/>
-							</div>
-						</div>
+
 
 						<span className="attribution-preview__title">
-							Attribution Preview
+							{ __( 'Attribution Preview', 'openlab-attributions' ) }
 						</span>
 						<ContentEditable
 							className="attribution-preview__body"
