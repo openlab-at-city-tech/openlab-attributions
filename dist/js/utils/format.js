@@ -42,7 +42,7 @@ function formatLicense( value ) {
 			break;
 
 		case 'u':
-			text = __( 'License unknown.', 'openlab-attributions' );
+			text = __( 'License unknown', 'openlab-attributions' );
 			break;
 
 		default:
