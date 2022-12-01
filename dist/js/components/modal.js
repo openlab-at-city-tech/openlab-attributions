@@ -31,6 +31,7 @@ class AttributionModal extends Component {
 		this.handleChange = this.handleChange.bind( this );
 		this.handleSubmit = this.handleSubmit.bind( this );
 		this.discardChanges = this.discardChanges.bind( this );
+		this.handleClose = this.handleClose.bind( this );
 
 		this.state = {
 			editedContent: false,
@@ -45,11 +46,35 @@ class AttributionModal extends Component {
 
 	componentDidMount() {
 		const modalMask = document.querySelector('.flexible-modal-mask');
+
 		if( modalMask ) {
 			modalMask.addEventListener( 'click', function(e) {
 				e.preventDefault();
 				e.stopImmediatePropagation();
 			} );
+		}
+
+		this.moveModalToEditorElement();
+	}
+
+	/**
+	 * After opening the modal, move it in the main editor element, instead of where it's open
+	 * (workaround because it's closing once the focus is lost). And create temporary div element,
+	 * because it needs to be brought back to position before closing.
+	 */
+	moveModalToEditorElement() {
+		const modal = document.querySelector('.component-attributions-modal');
+
+		if(modal) {
+			const originalPosition = modal.parentElement.parentElement;
+			const originalModalElementPosition = document.createElement('div');
+			originalModalElementPosition.setAttribute( 'id', 'originalModalPosition' );
+			originalPosition.appendChild(originalModalElementPosition);
+
+			const modalMainElement = modal.parentElement;
+
+			const editor = document.querySelector('.block-editor-block-list__layout');
+			editor.appendChild(modalMainElement);
 		}
 	}
 
@@ -73,10 +98,25 @@ class AttributionModal extends Component {
 			this.props.updateItem( { ...this.state } );
 		}
 
-		this.props.onClose();
+		// Handle close
+		this.handleClose();
 
 		// Reset state.
 		this.setState( this.props.item );
+	}
+
+	handleClose() {
+		const modal = document.querySelector('.component-attributions-modal');
+		const modalMainElement = modal.parentElement;
+
+		// Move the modal element to the original position
+		let originalPosition = document.getElementById('originalModalPosition');
+		originalPosition.parentElement.appendChild(modalMainElement);
+
+		// Remove temporary element
+		document.getElementById('originalModalPosition').remove();
+
+		this.props.onClose();
 	}
 
 	discardChanges() {
@@ -138,7 +178,7 @@ class AttributionModal extends Component {
 			modalType === 'add' ? __( 'Add Attribution', 'openlab-attributions' ) : __( 'Update Attribution', 'openlab-attributions' );
 
 		const isEdited = this.state.editedContent || this.state.content;
-		const preview = formatAttribution( { ...this.state } );
+		const preview = formatAttribution( { ...this.state } )
 
 		return (
 			<ReactModal
@@ -149,12 +189,12 @@ class AttributionModal extends Component {
 				minHeight={ 460 }
 				disableResize="true"
 				className={ 'component-attributions-modal' }
-				onRequestClose={ onClose }
+				onRequestClose={ this.handleClose }
 				isOpen={ this.props.isOpen }
 			>
 				<div className="header">
 					<h3>{ title }</h3>
-					<button onClick={ onClose }>
+					<button onClick={ this.handleClose }>
 						<svg
 							width="24"
 							height="24"
@@ -213,15 +253,11 @@ class AttributionModal extends Component {
 								/>
 								<SelectControl
 									label={ __( 'License', 'openlab-attributions' ) }
-									id="adaptedLicense"
-									name="adaptedLicense"
-									value={ this.state.adaptedLicense }
+									id="license"
+									name="license"
+									value={ this.state.license }
 									options={ licenses }
 									onChange={ this.handleChange }
-									required={
-										!! this.state.derivative ||
-										this.state.adaptedTitle
-									}
 									isInline
 								/>
 								<TextControl
@@ -359,7 +395,7 @@ class AttributionModal extends Component {
 							</Notice>
 						) }
 						<div className="component-modal__footer">
-							<Button isDestructive isLink onClick={ onClose }>
+							<Button isDestructive isLink onClick={ this.handleClose }>
 								{ __( 'Cancel', 'openlab-attributions' ) }
 							</Button>
 							<Button isPrimary type="submit">

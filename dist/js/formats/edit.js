@@ -22,11 +22,13 @@ import Modal from '../components/modal';
 const addMarker = ( value, data ) => {
 	const id = nanoid( 8 );
 	const item = { ...data, id };
+
 	const format = {
 		type: 'ol/attributions',
 		attributes: {
 			href: `#ref-${ id }`,
 			id: `anchor-${ id }`,
+			'aria-label': `See attribution`
 		},
 	};
 
@@ -34,6 +36,10 @@ const addMarker = ( value, data ) => {
 	dispatch( 'openlab/attributions' ).add( item );
 
 	const startIndex = isCollapsed( value ) ? value.start : value.end;
+	
+	// Add empty space at the end of the sentence, so it's possible to continue writing after it.
+	value.text += ' ';
+
 	const newValue = insertObject( value, format, startIndex );
 
 	return newValue;

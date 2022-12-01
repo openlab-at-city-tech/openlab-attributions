@@ -252,3 +252,15 @@
 		}
 	}
 }
+
+#adaptedFromHeading {
+	margin-top: 0;
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+	line-height: 1;
+	
+	&:hover {
+		cursor: pointer;
+	}
+}
