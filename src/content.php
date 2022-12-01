@@ -31,30 +31,32 @@ function render_attributions( $content ) {
 	require_once ROOT_DIR . '/views/attributions.php';
 	$content .= ob_get_clean();
 
-	return openlab_get_formatted_content_with_attributions($content);
+	return openlab_get_formatted_content_with_attributions( $content );
 }
 add_filter( 'the_content', __NAMESPACE__ . '\\render_attributions', 12 );
 
 /**
  * Replace content <span> attributions with <a> tags when printing it on the public site.
  */
-function openlab_get_formatted_content_with_attributions($content = '') {
+function openlab_get_formatted_content_with_attributions( $content = '' ) {
 	$doc = new DOMDocument();
-	@$doc->loadHTML($content);
+	// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
+	@$doc->loadHTML( $content );
 
-	$finder = new \DomXPath($doc);
-	$className = 'attribution-anchor';
+	$finder     = new \DomXPath( $doc );
+	$class_name = 'attribution-anchor';
 
-	$nodes = $finder->query("//*[contains(@class, '$className')]");
+	$nodes = $finder->query( "//*[contains(@class, '$class_name')]" );
 
-	foreach($nodes as $node) {
-		$newNode = $doc->createElement('a');
-		$newNode->setAttribute('href', $node->getAttribute('href'));
-		$newNode->setAttribute('id', $node->getAttribute('id'));
-		$newNode->setAttribute('aria-label', $node->getAttribute('aria-label'));
-		$newNode->setAttribute('class', $node->getAttribute('class'));
-		
-		$node->parentNode->replaceChild($newNode, $node);
+	foreach ( $nodes as $node ) {
+		$new_node = $doc->createElement( 'a' );
+		$new_node->setAttribute( 'href', $node->getAttribute( 'href' ) );
+		$new_node->setAttribute( 'id', $node->getAttribute( 'id' ) );
+		$new_node->setAttribute( 'aria-label', $node->getAttribute( 'aria-label' ) );
+		$new_node->setAttribute( 'class', $node->getAttribute( 'class' ) );
+
+		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase
+		$node->parentNode->replaceChild( $new_node, $node );
 	}
 
 	return $doc->saveHTML();
