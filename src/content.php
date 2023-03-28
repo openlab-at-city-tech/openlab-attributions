@@ -40,8 +40,11 @@ add_filter( 'the_content', __NAMESPACE__ . '\\render_attributions', 12 );
  */
 function openlab_get_formatted_content_with_attributions( $content = '' ) {
 	$doc = new DOMDocument();
+
+	$encoding = get_option( 'blog_charset' );
+
 	// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-	@$doc->loadHTML( $content );
+	@$doc->loadHTML( '<?xml encoding="' .  $encoding . '">' . $content );
 
 	$finder     = new \DomXPath( $doc );
 	$class_name = 'attribution-anchor';
