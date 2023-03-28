@@ -44,7 +44,7 @@ function openlab_get_formatted_content_with_attributions( $content = '' ) {
 	$encoding = get_option( 'blog_charset' );
 
 	// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-	@$doc->loadHTML( '<?xml encoding="' .  $encoding . '">' . $content );
+	@$doc->loadHTML( '<?xml encoding="' . $encoding . '">' . $content );
 
 	$finder     = new \DomXPath( $doc );
 	$class_name = 'attribution-anchor';
