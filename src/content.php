@@ -40,8 +40,11 @@ add_filter( 'the_content', __NAMESPACE__ . '\\render_attributions', 12 );
  */
 function openlab_get_formatted_content_with_attributions( $content = '' ) {
 	$doc = new DOMDocument();
+
+	$encoding = get_option( 'blog_charset' );
+
 	// phpcs:ignore WordPress.PHP.NoSilencedErrors.Discouraged
-	@$doc->loadHTML( $content );
+	@$doc->loadHTML( '<?xml encoding="' . $encoding . '">' . $content );
 
 	$finder     = new \DomXPath( $doc );
 	$class_name = 'attribution-anchor';
@@ -50,7 +53,9 @@ function openlab_get_formatted_content_with_attributions( $content = '' ) {
 
 	foreach ( $nodes as $node ) {
 		$new_node = $doc->createElement( 'a' );
-		$new_node->setAttribute( 'href', $node->getAttribute( 'href' ) );
+		$href     = openlab_get_node_href_attribute( $node );
+
+		$new_node->setAttribute( 'href', $href );
 		$new_node->setAttribute( 'id', $node->getAttribute( 'id' ) );
 		$new_node->setAttribute( 'aria-label', $node->getAttribute( 'aria-label' ) );
 		$new_node->setAttribute( 'class', $node->getAttribute( 'class' ) );
@@ -60,4 +65,30 @@ function openlab_get_formatted_content_with_attributions( $content = '' ) {
 	}
 
 	return $doc->saveHTML();
+}
+
+/**
+ * Get the "href" value from the DOM Node
+ */
+function openlab_get_node_href_attribute( $node ) {
+	// If the dom node has "href" attribute, return its value.
+	if ( ! empty( $node->getAttribute( 'href' ) ) ) {
+		return $node->getAttribute( 'href' );
+	}
+
+	// If the dom node has "data-href" attribute,  return its value (introduced in the later version of the plugin).
+	if ( ! empty( $node->getAttribute( 'data-href' ) ) ) {
+		return $node->getAttribute( 'data-href' );
+	}
+
+	// If none of the above exist, try to generate the href value from the "id" attribute.
+	return '#ref-' . openlab_get_attribute_id( $node );
+}
+
+/**
+ * Get the attribution ID from the "id" dom element attribute
+ */
+function openlab_get_attribute_id( $node ) {
+	// Remove "anchor-" from string in format "anchor-ABC-123".
+	return str_replace( 'anchor-', '', $node->getAttribute( 'id' ) );
 }
