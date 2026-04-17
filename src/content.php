@@ -81,7 +81,6 @@ function openlab_get_formatted_content_with_attributions( $content = '' ) {
 
 		$new_node->setAttribute( 'href', $href );
 		$new_node->setAttribute( 'id', $node->getAttribute( 'id' ) );
-		$new_node->setAttribute( 'aria-label', $node->getAttribute( 'aria-label' ) );
 		$new_node->setAttribute( 'class', $node->getAttribute( 'class' ) );
 
 		// phpcs:ignore WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase

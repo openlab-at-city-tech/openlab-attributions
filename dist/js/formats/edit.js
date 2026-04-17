@@ -28,8 +28,7 @@ const addMarker = ( value, data ) => {
 		attributes: {
 			href: `#ref-${ id }`,
 			'data-href': `#ref-${ id }`,
-			id: `anchor-${ id }`,
-			'aria-label': `See attribution`
+			id: `anchor-${ id }`
 		},
 	};
 
