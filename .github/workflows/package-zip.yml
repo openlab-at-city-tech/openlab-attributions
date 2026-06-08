@@ -2,7 +2,7 @@ name: Packaging a release zip
 
 on:
   push:
-    tags: 
+    tags:
     - '*'
 
 jobs:
