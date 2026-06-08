@@ -1,23 +1,25 @@
-name: Packaging a release + zip
+name: Packaging a release zip
 
 on:
   push:
-    tags: 
+    tags:
     - '*'
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
 
     strategy:
       matrix:
-        node-version: [16.x]
+        node-version: [18.x]
     
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11
 
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@60edb5dd545a775178f52524783378180af0d1f8
       with:
         node-version: ${{ matrix.node-version }}
 
@@ -27,14 +29,14 @@ jobs:
         npm run build
     
     - name: Zip
-      uses: thedoctor0/zip-release@main
+      uses: thedoctor0/zip-release@b57d897cb5d60cb78b51a507f63fa184cfe35554
       with:
         type: 'zip'
         filename: 'openlab-attributions.zip'
         exclusions: '*.git* /*node_modules/* vendor composer.* package.json package-lock.json phpcs.xml.dist'
 
     - name: Upload Release
-      uses: ncipollo/release-action@v1
+      uses: ncipollo/release-action@339a81892b84b4eeb0f6e744e4574d79d0d9b8dd
       with:
         artifacts: "openlab-attributions.zip"
         token: ${{ secrets.GITHUB_TOKEN }}
