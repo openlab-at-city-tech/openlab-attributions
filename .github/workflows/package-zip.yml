@@ -1,4 +1,4 @@
-name: Packaging a release + zip
+name: Packaging a release zip
 
 on:
   push:
